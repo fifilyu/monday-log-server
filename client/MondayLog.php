@@ -17,18 +17,20 @@ abstract class LogType
 class MondayLog
 {
     private $enableLog = true;
-    private $url = 'http://localhost:8080/add_log';
-    private $location = 'mondaylog.php.client';
+    private $url;
+    private $location;
+    private $charset;
 
-    public function __construct($url, $location = null)
+    public function __construct($url = 'http://localhost:8080/add_log', $charset = 'UTF-8', $location = 'mondaylog.php.client')
     {
-        if (!is_null($url)) {
-            $this->url = $url;
-        }
+        $this->url = $url;
+        $this->charset = $charset;
+        $this->location = $this->_iconv($location);
+    }
 
-        if (!is_null($location)) {
-            $this->location = $location;
-        }
+    private function _iconv($text)
+    {
+        return $this->charset == 'UTF-8' ? $text : iconv($this->charset, "UTF-8//TRANSLIT//IGNORE", $text);
     }
 
     private function httpResponse($url, $postData)
@@ -52,6 +54,7 @@ class MondayLog
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             "Content-Type: application/json; charset=utf-8",
         ));
+
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $errno = curl_errno($ch);
@@ -70,13 +73,15 @@ class MondayLog
     public function beginCheckpoint($checkpoint, $location = null)
     {
         $data = array(
-            "Location" => is_null($location) ? $this->location : $location,
+            "Location" => is_null($location) ? $this->location : $this->_iconv($location),
             "Message" => null,
             "LogType" => LogType::BeginCheckpoint,
-            "Checkpoint" => $checkpoint,
+            "Checkpoint" => $this->_iconv($checkpoint),
             "VarName" => null,
             "VarValue" => null,
         );
+
+        var_dump($data);
 
         $this->httpResponse($this->url, json_encode($data));
     }
@@ -84,13 +89,15 @@ class MondayLog
     public function endCheckpoint($checkpoint, $location = null)
     {
         $data = array(
-            "Location" => is_null($location) ? $this->location : $location,
+            "Location" => is_null($location) ? $this->location : $this->_iconv($location),
             "Message" => null,
             "LogType" => LogType::EndCheckpoint,
-            "Checkpoint" => $checkpoint,
+            "Checkpoint" => $this->_iconv($checkpoint),
             "VarName" => null,
             "VarValue" => null,
         );
+
+        var_dump($data);
 
         $this->httpResponse($this->url, json_encode($data));
     }
@@ -98,13 +105,15 @@ class MondayLog
     public function variable($name, $value, $location = null)
     {
         $data = array(
-            "Location" => is_null($location) ? $this->location : $location,
+            "Location" => is_null($location) ? $this->location : $this->_iconv($location),
             "Message" => null,
             "LogType" => LogType::Variable,
             "Checkpoint" => null,
-            "VarName" => $name,
-            "VarValue" => $value,
+            "VarName" => $this->_iconv($name),
+            "VarValue" => $this->_iconv($value),
         );
+
+        var_dump($data);
 
         $this->httpResponse($this->url, json_encode($data));
     }
@@ -112,12 +121,12 @@ class MondayLog
     public function input($name, $value, $location = null)
     {
         $data = array(
-            "Location" => is_null($location) ? $this->location : $location,
+            "Location" => is_null($location) ? $this->location : $this->_iconv($location),
             "Message" => null,
             "LogType" => LogType::Input,
             "Checkpoint" => null,
-            "VarName" => $name,
-            "VarValue" => $value,
+            "VarName" => $this->_iconv($name),
+            "VarValue" => $this->_iconv($value),
         );
 
         $this->httpResponse($this->url, json_encode($data));
@@ -126,13 +135,15 @@ class MondayLog
     public function output($name, $value, $location = null)
     {
         $data = array(
-            "Location" => is_null($location) ? $this->location : $location,
+            "Location" => is_null($location) ? $this->location : $this->_iconv($location),
             "Message" => null,
             "LogType" => LogType::Output,
             "Checkpoint" => null,
-            "VarName" => $name,
-            "VarValue" => $value,
+            "VarName" => $this->_iconv($name),
+            "VarValue" => $this->_iconv($value),
         );
+
+        var_dump($data);
 
         $this->httpResponse($this->url, json_encode($data));
     }
@@ -140,8 +151,8 @@ class MondayLog
     public function error($message, $location = null)
     {
         $data = array(
-            "Location" => is_null($location) ? $this->location : $location,
-            "Message" => $message,
+            "Location" => is_null($location) ? $this->location : $this->_iconv($location),
+            "Message" => $this->_iconv($message),
             "LogType" => LogType::Error,
             "Checkpoint" => null,
             "VarName" => null,
@@ -154,8 +165,8 @@ class MondayLog
     public function warn($message, $location = null)
     {
         $data = array(
-            "Location" => is_null($location) ? $this->location : $location,
-            "Message" => $message,
+            "Location" => is_null($location) ? $this->location : $this->_iconv($location),
+            "Message" => $this->_iconv($message),
             "LogType" => LogType::Warn,
             "Checkpoint" => null,
             "VarName" => null,
@@ -168,8 +179,8 @@ class MondayLog
     public function info($message, $location = null)
     {
         $data = array(
-            "Location" => is_null($location) ? $this->location : $location,
-            "Message" => $message,
+            "Location" => is_null($location) ? $this->location : $this->_iconv($location),
+            "Message" => $this->_iconv($message),
             "LogType" => LogType::Info,
             "Checkpoint" => null,
             "VarName" => null,
@@ -182,8 +193,8 @@ class MondayLog
     public function debug($message, $location = null)
     {
         $data = array(
-            "Location" => is_null($location) ? $this->location : $location,
-            "Message" => $message,
+            "Location" => is_null($location) ? $this->location : $this->_iconv($location),
+            "Message" => $this->_iconv($message),
             "LogType" => LogType::Debug,
             "Checkpoint" => null,
             "VarName" => null,
@@ -196,8 +207,8 @@ class MondayLog
     public function trace($message, $location = null)
     {
         $data = array(
-            "Location" => is_null($location) ? $this->location : $location,
-            "Message" => $message,
+            "Location" => is_null($location) ? $this->location : $this->_iconv($location),
+            "Message" => $this->_iconv($message),
             "LogType" => LogType::Trace,
             "Checkpoint" => null,
             "VarName" => null,
