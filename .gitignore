@@ -24,6 +24,6 @@ hs_err_pid*
 
 .idea/
 target/
-resources/*.yml
-resources/*.xml
+src/main/resources/*.yml
+src/main/resources/*.xml
 *.iml
