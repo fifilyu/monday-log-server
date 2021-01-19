@@ -42,18 +42,28 @@ class MondayLog
         curl_setopt($ch, CURLOPT_USERAGENT, 'MondayLogClient/1.0 (+https://github.com/fifilyu/monday-log-server)');
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 100);
+
+        // 如果 libcurl 编译时使用系统标准的名称解析器（ standard system name resolver），那部分的连接仍旧使用以秒计的超时解决方案，最小超时时间还是一秒钟。
+        // 此时，设置为999ms会出现错误"Timeout was reached"。设置为1000ms后，错误消失
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 1000);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 1000);
+
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             "Content-Type: application/json; charset=utf-8",
         ));
-
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $errno = curl_errno($ch);
+        $error = curl_error($ch);
         curl_close($ch);
 
-        if ($httpCode != 200) {
-            throw new Exception('[ERROR] Send message to Monday Log Server...failed');
+        if ($errno > 0) {
+            throw new Exception("[ERROR] cURL Error ($errno): $error");
+        } else {
+            if ($httpCode != 200) {
+                throw new Exception('[ERROR] Send message to Monday Log Server...failed');
+            }
         }
     }
 
@@ -85,7 +95,7 @@ class MondayLog
         $this->httpResponse($this->url, json_encode($data));
     }
 
-    public function var($name, $value, $location = null)
+    public function variable($name, $value, $location = null)
     {
         $data = array(
             "Location" => is_null($location) ? $this->location : $location,
