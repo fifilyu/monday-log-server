@@ -1,9 +1,0 @@
-server:
-  address: localhost
-  port: 8181
-spring:
-  main:
-    allow-bean-definition-overriding: true
-  jmx:
-    default-domain: monday-log-server
-    unique-names: true
