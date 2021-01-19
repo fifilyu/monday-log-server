@@ -81,8 +81,6 @@ class MondayLog
             "VarValue" => null,
         );
 
-        var_dump($data);
-
         $this->httpResponse($this->url, json_encode($data));
     }
 
@@ -97,8 +95,6 @@ class MondayLog
             "VarValue" => null,
         );
 
-        var_dump($data);
-
         $this->httpResponse($this->url, json_encode($data));
     }
 
@@ -112,8 +108,6 @@ class MondayLog
             "VarName" => $this->_iconv($name),
             "VarValue" => $this->_iconv($value),
         );
-
-        var_dump($data);
 
         $this->httpResponse($this->url, json_encode($data));
     }
@@ -142,8 +136,6 @@ class MondayLog
             "VarName" => $this->_iconv($name),
             "VarValue" => $this->_iconv($value),
         );
-
-        var_dump($data);
 
         $this->httpResponse($this->url, json_encode($data));
     }
