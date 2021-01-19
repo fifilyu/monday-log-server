@@ -1,6 +1,6 @@
 <?php
 
-include_once 'monday-log-client.php';
+include_once 'MondayLog.php';
 
 $log = new MondayLog('http://localhost:8080/add_log', 'foo.com/info');
 $log->beginCheckpoint('log test case');
