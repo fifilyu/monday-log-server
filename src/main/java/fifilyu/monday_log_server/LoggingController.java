@@ -22,7 +22,7 @@ public class LoggingController {
         final LogType logType = logRecord.getLogType();
         final String location = logRecord.getLocation();
         final String message = logRecord.getMessage();
-        final String functionName = logRecord.getFunctionName();
+        final String checkpoint = logRecord.getCheckpoint();
         final String varName = logRecord.getVarName();
         final String varValue = logRecord.getVarValue();
 
@@ -30,9 +30,9 @@ public class LoggingController {
             return new LogResponse(1, "日志类型空指针");
         }
 
-        if (logType == LogType.LOGTYPE_ENTER_FUNC || logType == LogType.LOGTYPE_EXIT_FUNC) {
-            if (functionName == null) {
-                return new LogResponse(1, "函数名称空指针");
+        if (logType == LogType.LOGTYPE_BEGIN_CHECKPOINT || logType == LogType.LOGTYPE_END_CHECKPOINT) {
+            if (checkpoint == null) {
+                return new LogResponse(1, "逻辑检查点空指针");
             }
         }
 
@@ -62,20 +62,20 @@ public class LoggingController {
             case LOGTYPE_TRACE:
                 log.trace(location, message);
                 break;
-            case LOGTYPE_ENTER_FUNC:
-                log.enterFunc(location, logRecord.getFunctionName());
+            case LOGTYPE_BEGIN_CHECKPOINT:
+                log.beginCheckpoint(location, checkpoint);
                 break;
-            case LOGTYPE_EXIT_FUNC:
-                log.exitFunc(location, logRecord.getFunctionName());
+            case LOGTYPE_END_CHECKPOINT:
+                log.endCheckpoint(location, checkpoint);
                 break;
             case LOGTYPE_VAR:
-                log.var(location, logRecord.getVarName(), logRecord.getVarValue());
+                log.var(location, varName, varValue);
                 break;
             case LOGTYPE_INPUT:
-                log.input(location, logRecord.getVarName(), logRecord.getVarValue());
+                log.input(location, varName, varValue);
                 break;
             case LOGTYPE_OUTPUT:
-                log.output(location, logRecord.getVarName(), logRecord.getVarValue());
+                log.output(location, varName, varValue);
                 break;
         }
 

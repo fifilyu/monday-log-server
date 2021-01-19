@@ -6,8 +6,8 @@ public enum LogType {
     LOGTYPE_INFO,  // 2
     LOGTYPE_DEBUG,  // 3
     LOGTYPE_TRACE,  // 4
-    LOGTYPE_ENTER_FUNC,  // 5
-    LOGTYPE_EXIT_FUNC,  // 6
+    LOGTYPE_BEGIN_CHECKPOINT,  // 5
+    LOGTYPE_END_CHECKPOINT,  // 6
     LOGTYPE_VAR,  // 7
     LOGTYPE_INPUT,  // 8
     LOGTYPE_OUTPUT,  // 9

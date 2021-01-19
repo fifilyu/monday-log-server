@@ -27,12 +27,12 @@ public class MondayLog {
         this.logger = LoggerFactory.getLogger(clazz);
     }
 
-    public void enterFunc(String location, String funcName) {
-        logger.trace(String.format("%s|Enter function: %s", location, funcName));
+    public void beginCheckpoint(String location, String checkpoint) {
+        logger.trace(String.format("%s|Begin checkpoint: %s", location, checkpoint));
     }
 
-    public void exitFunc(String location, String funcName) {
-        logger.trace(String.format("%s|Exit function: %s", location, funcName));
+    public void endCheckpoint(String location, String checkpoint) {
+        logger.trace(String.format("%s|End checkpoint: %s", location, checkpoint));
     }
 
     public <T> void var(String location, String name, T value) {

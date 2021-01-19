@@ -10,7 +10,7 @@ public class LogRecord {
     private String Location;
     private String Message;
     private LogType LogType;
-    private String FunctionName;
+    private String Checkpoint;
     private String VarName;
     private String VarValue;
 
@@ -26,8 +26,8 @@ public class LogRecord {
         return LogType;
     }
 
-    public String getFunctionName() {
-        return FunctionName;
+    public String getCheckpoint() {
+        return Checkpoint;
     }
 
     public String getVarName() {
@@ -50,8 +50,8 @@ public class LogRecord {
         LogType = logType;
     }
 
-    public void setFunctionName(String functionName) {
-        FunctionName = functionName;
+    public void setCheckpoint(String checkpoint) {
+        Checkpoint = checkpoint;
     }
 
     public void setVarName(String varName) {
