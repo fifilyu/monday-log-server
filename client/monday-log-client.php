@@ -16,6 +16,7 @@ abstract class LogType
 
 class MondayLog
 {
+    private $enableLog = true;
     private $url = 'http://localhost:8080/add_log';
     private $location = 'mondaylog.php.client';
 
@@ -32,6 +33,10 @@ class MondayLog
 
     private function httpResponse($url, $postData)
     {
+        if (!$this->enableLog) {
+            return;
+        }
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_USERAGENT, 'MondayLogClient/1.0 (+https://github.com/fifilyu/monday-log-server)');
