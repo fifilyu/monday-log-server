@@ -5,10 +5,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @SuppressWarnings(value = "unused")
 public class MondayLog {
     private final Logger logger;
+    private final Map<String, Long> timeCostMap = new LinkedHashMap<>();
 
     /**
      * 将异常堆栈信息转为字符串
@@ -28,11 +31,24 @@ public class MondayLog {
     }
 
     public void beginCheckpoint(String location, String checkpoint) {
+        final String key = location + "|" + checkpoint;
+        final Long now = System.currentTimeMillis();
+        timeCostMap.put(key, now);
+
         logger.trace(String.format("%s|Begin checkpoint: %s", location, checkpoint));
     }
 
     public void endCheckpoint(String location, String checkpoint) {
-        logger.trace(String.format("%s|End checkpoint: %s", location, checkpoint));
+        final String key = location + "|" + checkpoint;
+        final Long now = System.currentTimeMillis();
+
+        if(timeCostMap.containsKey(key)) {
+            final Long beginTime = timeCostMap.get(key);
+            final Long difference = now - beginTime;
+            logger.trace(String.format("%s|End checkpoint: %s, timing statistics: %dms", location, checkpoint, difference));
+        } else {
+            logger.trace(String.format("%s|End checkpoint: %s", location, checkpoint));
+        }
     }
 
     public <T> void var(String location, String name, T value) {
