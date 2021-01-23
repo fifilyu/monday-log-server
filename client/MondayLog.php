@@ -33,7 +33,7 @@ class MondayLog
         return $this->charset == 'UTF-8' ? $text : iconv($this->charset, "UTF-8//TRANSLIT//IGNORE", $text);
     }
 
-    private function httpResponse($url, $postData)
+    private function httpRequest($url, $postData)
     {
         if (!$this->enableLog) {
             return;
@@ -81,7 +81,7 @@ class MondayLog
             "VarValue" => null,
         );
 
-        $this->httpResponse($this->url, json_encode($data));
+        $this->httpRequest($this->url, json_encode($data));
     }
 
     public function endCheckpoint($checkpoint, $location = null)
@@ -95,7 +95,7 @@ class MondayLog
             "VarValue" => null,
         );
 
-        $this->httpResponse($this->url, json_encode($data));
+        $this->httpRequest($this->url, json_encode($data));
     }
 
     public function variable($name, $value, $location = null)
@@ -109,7 +109,7 @@ class MondayLog
             "VarValue" => $this->_iconv($value),
         );
 
-        $this->httpResponse($this->url, json_encode($data));
+        $this->httpRequest($this->url, json_encode($data));
     }
 
     public function input($name, $value, $location = null)
@@ -123,7 +123,7 @@ class MondayLog
             "VarValue" => $this->_iconv($value),
         );
 
-        $this->httpResponse($this->url, json_encode($data));
+        $this->httpRequest($this->url, json_encode($data));
     }
 
     public function output($name, $value, $location = null)
@@ -137,7 +137,7 @@ class MondayLog
             "VarValue" => $this->_iconv($value),
         );
 
-        $this->httpResponse($this->url, json_encode($data));
+        $this->httpRequest($this->url, json_encode($data));
     }
 
     public function error($message, $location = null)
@@ -151,7 +151,7 @@ class MondayLog
             "VarValue" => null,
         );
 
-        $this->httpResponse($this->url, json_encode($data));
+        $this->httpRequest($this->url, json_encode($data));
     }
 
     public function warn($message, $location = null)
@@ -165,7 +165,7 @@ class MondayLog
             "VarValue" => null,
         );
 
-        $this->httpResponse($this->url, json_encode($data));
+        $this->httpRequest($this->url, json_encode($data));
     }
 
     public function info($message, $location = null)
@@ -179,7 +179,7 @@ class MondayLog
             "VarValue" => null,
         );
 
-        $this->httpResponse($this->url, json_encode($data));
+        $this->httpRequest($this->url, json_encode($data));
     }
 
     public function debug($message, $location = null)
@@ -193,7 +193,7 @@ class MondayLog
             "VarValue" => null,
         );
 
-        $this->httpResponse($this->url, json_encode($data));
+        $this->httpRequest($this->url, json_encode($data));
     }
 
     public function trace($message, $location = null)
@@ -207,6 +207,6 @@ class MondayLog
             "VarValue" => null,
         );
 
-        $this->httpResponse($this->url, json_encode($data));
+        $this->httpRequest($this->url, json_encode($data));
     }
 }
