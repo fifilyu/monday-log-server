@@ -25,23 +25,12 @@
 
     <!-- 包版本号控制 -->
     <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>fifilyu</groupId>
-                <artifactId>happy-java</artifactId>
-                <version>0.0.1</version>
-            </dependency>
-        </dependencies>
     </dependencyManagement>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>fifilyu</groupId>
-            <artifactId>happy-java</artifactId>
         </dependency>
     </dependencies>
     <build>
