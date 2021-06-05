@@ -6,7 +6,6 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
             <fileNamePattern>var/log/monday.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxFileSize>100MB</maxFileSize>
             <!-- each file should be at most 100MB, keep 30 days worth of history, but at most 3GB -->
             <maxHistory>30</maxHistory>
             <totalSizeCap>3GB</totalSizeCap>
