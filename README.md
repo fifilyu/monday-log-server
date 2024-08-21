@@ -7,4 +7,4 @@ Java写的HTTP日志服务器
 
 ## 运行
 
-    java -Dlogback.configurationFile=src/main/resources/logback.xml  -Dtitp.server.config.file=src/main/resources/application.yml -jar target/monday-log-server-1.0.0.jar
+    java -Dlogback.configurationFile=src/main/resources/logback.xml  -Dspring.config.location=src/main/resources/application.yml -jar target/monday-log-server-1.0.0.jar
